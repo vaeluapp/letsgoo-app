@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letsgoo — Stop Searching. Tell Us Your Vibe.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9935A;
+  --gold-light: #E8B88A;
+  --dark: #0D0B09;
+  --dark2: #1A1410;
+  --cream: #F7F2EA;
+  --white: #FDFAF6;
+  --muted: rgba(253,250,246,0.55);
+  --border: rgba(253,250,246,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--dark);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+/* ========== LANDING / HERO ========== */
+#landing {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1.05);
+  animation: heroZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1.12); }
+}
+
+.hero-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(13,11,9,0.1) 0%,
+    rgba(13,11,9,0.0) 30%,
+    rgba(13,11,9,0.5) 65%,
+    rgba(13,11,9,0.92) 100%
+  );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 28px 56px;
+  max-width: 700px;
+}
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 14px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.3s ease forwards;
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 10vw, 72px);
+  font-weight: 300;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s ease forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+.hero-sub {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  max-width: 480px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.7s ease forwards;
+}
+
+/* Search bar — Booking.com style dense entry point */
+.search-bar {
+  display: flex;
+  align-items: stretch;
+  background: rgba(253,250,246,0.97);
+  border-radius: 16px;
+  padding: 6px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  max-width: 620px;
+  cursor: pointer;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.85s ease forwards;
+  transition: transform 0.2s;
+}
+.search-bar:hover { transform: translateY(-2px); }
+.search-field {
+  flex: 1;
+  padding: 12px 18px;
+  cursor: pointer;
+}
+.search-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+.search-value {
+  font-size: 14px;
+  color: var(--dark);
+  font-weight: 400;
+}
+.search-divider {
+  width: 1px;
+  background: rgba(13,11,9,0.1);
+  margin: 8px 0;
+}
+.search-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--dark);
+  border: none;
+  border-radius: 12px;
+  padding: 0 24px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.search-btn:hover { background: var(--gold-light); }
+
+.trust-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.0s ease forwards;
+}
+.trust-row span {
+  font-size: 12px;
+  color: rgba(253,250,246,0.7);
+  font-weight: 300;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--gold);
+  color: var(--dark);
+  border: none;
+  border-radius: 50px;
+  padding: 16px 32px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: all 0.25s;
+}
+.hero-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  animation: fadeUp 0.8s 1.2s ease forwards;
+}
+.hero-scroll span { font-size: 10px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
+.scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+@keyframes scrollPulse { 0%,100%{opacity:0.4;transform:scaleY(1)} 50%{opacity:1;transform:scaleY(0.6)} }
+
+/* Destination strip */
+.dest-strip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  gap: 1px;
+  overflow: hidden;
+  height: 80px;
+  opacity: 0;
+  animation: fadeIn 1s 1.4s ease forwards;
+}
+.strip-item {
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+.strip-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.strip-item:hover img { transform: scale(1.08); }
+.strip-item-overlay {
+  position: absolute; inset: 0;
+  background: rgba(13,11,9,0.5);
+  display: flex; align-items: flex-end;
+  padding: 8px;
+  transition: background 0.3s;
+}
+.strip-item:hover .strip-item-overlay { background: rgba(13,11,9,0.2); }
+.strip-item-name { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--white); }
+
+/* ========== DISCOVER SECTION (below the fold, dense like Booking.com) ========== */
+.discover-section {
+  background: var(--cream);
+  color: var(--dark);
+  padding: 64px 0 80px;
+}
+.discover-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+.discover-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 28px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.discover-eyebrow {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 6px; font-weight: 500;
+}
+.discover-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 400; color: var(--dark);
+}
+.discover-cta {
+  background: none; border: 1.5px solid var(--dark);
+  border-radius: 50px; padding: 10px 22px;
+  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
+  color: var(--dark); cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.discover-cta:hover { background: var(--dark); color: var(--cream); }
+
+.discover-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+.disc-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 4/5;
+  transition: transform 0.25s;
+  background: linear-gradient(135deg, #2a2218, #1c2b4a);
+}
+.disc-card:hover { transform: translateY(-4px); }
+.disc-card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; background: linear-gradient(135deg, #2a2218, #1c2b4a); }
+.disc-card:hover img { transform: scale(1.06); }
+.disc-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(253,250,246,0.95); color: var(--dark);
+  font-size: 11px; font-weight: 500;
+  padding: 4px 10px; border-radius: 20px;
+}
+.disc-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(13,11,9,0.92) 0%, transparent 100%);
+  padding: 28px 12px 12px;
+  color: white;
+}
+.disc-name { font-size: 15px; font-weight: 500; }
+.disc-meta { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+
+.vibe-row-head {
+  font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--gold); font-weight: 500; margin-bottom: 16px;
+}
+.vibe-cat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 56px;
+}
+.vibe-cat {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1/1;
+  transition: transform 0.2s;
+  background: linear-gradient(135deg, #2a2218, #1c2b4a);
+}
+.vibe-cat:hover { transform: translateY(-3px); }
+.vibe-cat img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vibe-cat span {
+  position: absolute; bottom: 8px; left: 8px; right: 8px;
+  color: white; font-size: 11px; font-weight: 500;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+.vibe-cat::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,11,9,0.6) 0%, transparent 60%);
+}
+
+.banner-cta {
+  background: var(--dark);
+  border-radius: 24px;
+  padding: 48px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.banner-eyebrow { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+.banner-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 300; color: white; line-height: 1.2; }
+.banner-btn {
+  background: var(--gold); color: var(--dark);
+  border: none; border-radius: 50px; padding: 16px 32px;
+  font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.banner-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+@media (max-width: 720px) {
+  .discover-grid { grid-template-columns: repeat(2, 1fr); }
+  .vibe-cat-row { grid-template-columns: repeat(3, 1fr); }
+  .banner-cta { flex-direction: column; text-align: center; }
+  .search-bar { flex-direction: column; max-width: 100%; }
+  .search-divider { display: none; }
+  .search-field { padding: 10px 16px; }
+  .search-btn { margin: 6px; justify-content: center; }
+  .trust-row { display: none; }
+}
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+/* ========== QUIZ OVERLAY ========== */
+#quizOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow-y: auto;
+}
+#quizOverlay.open { display: block; }
+
+.quiz-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(13,11,9,0.85);
+  backdrop-filter: blur(8px);
+}
+
+.quiz-panel {
+  position: relative;
+  z-index: 2;
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 20px 20px 80px;
+  min-height: 100vh;
+}
+
+.quiz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0 24px;
+}
+
+.quiz-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--white);
+}
+.quiz-logo em { font-style: italic; color: var(--gold); }
+
+.quiz-close {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 36px; height: 36px;
+  cursor: pointer; color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: background 0.2s;
+}
+.quiz-close:hover { background: rgba(255,255,255,0.18); }
+
+/* Progress */
+.progress-track {
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 1px;
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--gold), var(--gold-light));
+  border-radius: 1px;
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  width: 20%;
+}
+
+/* Step labels */
+.step-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.step-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+
+/* Steps */
+.step { display: none; animation: fadeUp 0.35s ease; }
+.step.active { display: block; }
+
+/* ---- VIBE GRID ---- */
+.vibe-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.vibe-tile {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 3/4;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
+  background: linear-gradient(135deg, #2a2218, #1c2b4a);
+}
+.vibe-tile:hover { transform: translateY(-2px); }
+.vibe-tile.selected { border-color: var(--gold); }
+
+/* Slideshow: 3 images cross-fading within each tile */
+.slideshow { position: absolute; inset: 0; }
+.slide {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.2s ease-in-out, transform 6s ease-out;
+  transform: scale(1.08);
+}
+.slide.active { opacity: 1; transform: scale(1); }
+.vibe-tile:hover .slide.active { transform: scale(1.08); }
+.vibe-tile-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,11,9,0.85) 0%, rgba(13,11,9,0.1) 60%);
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  transition: background 0.3s;
+}
+.vibe-tile.selected .vibe-tile-overlay { background: linear-gradient(to top, rgba(201,147,90,0.6) 0%, rgba(13,11,9,0.1) 60%); }
+.vibe-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--gold);
+  display: none; align-items: center; justify-content: center;
+}
+.vibe-tile.selected .vibe-check { display: flex; }
+.vibe-check svg { width: 11px; height: 11px; }
+.vibe-name { font-size: 13px; font-weight: 500; line-height: 1.2; }
+.vibe-desc { font-size: 11px; color: rgba(253,250,246,0.7); margin-top: 2px; }
+
+/* ---- TRAVELER ---- */
+.traveler-block { margin-bottom: 24px; }
+.traveler-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+.traveler-row:last-child { border-bottom: none; }
+.trav-label { font-size: 15px; }
+.trav-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.counter { display: flex; align-items: center; gap: 16px; }
+.cnt-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--border); background: rgba(255,255,255,0.06);
+  color: var(--white); font-size: 20px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; line-height: 1;
+}
+.cnt-btn:hover { border-color: var(--gold); color: var(--gold); }
+.cnt-val { font-size: 20px; font-weight: 500; min-width: 24px; text-align: center; }
+
+.child-ages { margin-top: 14px; display: none; }
+.child-ages.show { display: block; }
+.ages-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.age-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.age-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(201,147,90,0.12); border: 1px solid rgba(201,147,90,0.25);
+  border-radius: 20px; padding: 6px 14px; font-size: 13px;
+}
+.age-pill select {
+  background: transparent; border: none; color: var(--white);
+  font-family: 'Outfit', sans-serif; font-size: 13px; cursor: pointer; outline: none;
+}
+.age-pill-lbl { color: var(--muted); font-size: 12px; }
+
+/* ---- BUDGET ---- */
+.big-budget {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 64px; font-weight: 300; color: var(--gold);
+  letter-spacing: -2px; margin-bottom: 4px;
+}
+.budget-note { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+input[type=range] {
+  width: 100%; height: 3px; -webkit-appearance: none;
+  background: rgba(255,255,255,0.12); border-radius: 2px;
+  margin-bottom: 8px; outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%;
+  background: var(--gold); border: 3px solid var(--dark2);
+  box-shadow: 0 0 0 2px var(--gold);
+}
+.range-ends { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); margin-bottom: 28px; }
+
+/* ---- FIELDS ---- */
+.field-group { margin-bottom: 14px; }
+.field-lbl { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; display: block; }
+.field {
+  width: 100%; height: 48px; background: rgba(255,255,255,0.07);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 0 16px; font-family: 'Outfit', sans-serif;
+  font-size: 15px; color: var(--white);
+  transition: border-color 0.2s; -webkit-appearance: none;
+}
+.field:focus { outline: none; border-color: var(--gold); }
+.field::placeholder { color: var(--muted); }
+select.field { cursor: pointer; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ---- CHIPS ---- */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.chip {
+  padding: 8px 16px; border-radius: 40px;
+  border: 1px solid var(--border); background: rgba(255,255,255,0.05);
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  transition: all 0.18s;
+}
+.chip:hover { border-color: rgba(201,147,90,0.4); color: var(--white); }
+.chip.on { border-color: var(--gold); background: rgba(201,147,90,0.14); color: var(--white); }
+
+/* ---- TRANSPORT ---- */
+.transport-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.trans-card {
+  border: 1.5px solid var(--border); border-radius: 14px;
+  overflow: hidden; cursor: pointer; transition: border-color 0.2s, transform 0.2s;
+}
+.trans-card:hover { transform: translateY(-2px); }
+.trans-card.selected { border-color: var(--gold); }
+.trans-img { width: 100%; height: 90px; object-fit: cover; display: block; }
+.trans-label {
+  padding: 10px 12px; font-size: 13px; font-weight: 500;
+  background: rgba(255,255,255,0.05);
+}
+.trans-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* ---- PET ---- */
+.pet-hero { width: 100%; height: 160px; object-fit: cover; border-radius: 14px; margin-bottom: 16px; display: block; }
+.pet-opts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+.pet-opt {
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 8px; text-align: center; cursor: pointer;
+  background: rgba(255,255,255,0.04); transition: all 0.18s;
+}
+.pet-opt:hover { border-color: rgba(201,147,90,0.4); }
+.pet-opt.on { border-color: var(--gold); background: rgba(201,147,90,0.1); }
+.pet-icon { font-size: 22px; display: block; margin-bottom: 5px; }
+.pet-lbl { font-size: 11px; font-weight: 500; }
+
+.sitter-section { display: none; margin-top: 4px; }
+.sitter-section.show { display: block; }
+.sitter-hdr { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.sitter-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px; border: 1px solid var(--border);
+  border-radius: 10px; margin-bottom: 8px;
+  background: rgba(255,255,255,0.04); cursor: pointer;
+  transition: border-color 0.15s;
+}
+.sitter-row:hover { border-color: var(--gold); }
+.sitter-av { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.sitter-info { flex: 1; }
+.sitter-nm { font-size: 14px; font-weight: 500; }
+.sitter-dt { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.sitter-pr { font-size: 14px; font-weight: 500; color: var(--gold); }
+
+/* ---- TOGGLES ---- */
+.toggle-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.toggle-row:last-child { border-bottom: none; }
+.tgl-txt .tl { font-size: 14px; }
+.tgl-txt .ts { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.tgl { width: 44px; height: 24px; border-radius: 12px; background: rgba(255,255,255,0.12); position: relative; cursor: pointer; transition: background 0.25s; flex-shrink: 0; }
+.tgl.on { background: var(--gold); }
+.tgl-dot { width: 18px; height: 18px; border-radius: 50%; background: white; position: absolute; top: 3px; left: 3px; transition: left 0.25s; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+.tgl.on .tgl-dot { left: 23px; }
+.toggles-wrap { margin-bottom: 24px; }
+
+/* ---- BUTTONS ---- */
+.btn {
+  width: 100%; height: 54px;
+  background: var(--gold); color: var(--dark);
+  border: none; border-radius: 12px;
+  font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 500;
+  cursor: pointer; letter-spacing: 0.02em;
+  transition: all 0.22s; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+.btn-ghost {
+  background: none; border: none; font-family: 'Outfit', sans-serif;
+  font-size: 13px; color: var(--muted); cursor: pointer;
+  margin-top: 12px; display: block; width: 100%; text-align: center;
+  transition: color 0.2s;
+}
+.btn-ghost:hover { color: var(--white); }
+
+/* ========== LOADING ========== */
+#loadingScreen {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: var(--dark);
+  align-items: center; justify-content: center; flex-direction: column;
+  text-align: center;
+}
+#loadingScreen.show { display: flex; }
+.load-reel {
+  display: flex; gap: 3px; margin-bottom: 40px;
+  width: 90vw; max-width: 500px; height: 200px;
+  border-radius: 16px; overflow: hidden;
+}
+.reel-img { flex: 1; object-fit: cover; opacity: 0; animation: reelFade 4s ease-in-out forwards; }
+.reel-img:nth-child(2) { animation-delay: 0.4s; }
+.reel-img:nth-child(3) { animation-delay: 0.8s; }
+.reel-img:nth-child(4) { animation-delay: 1.2s; }
+.reel-img:nth-child(5) { animation-delay: 1.6s; }
+@keyframes reelFade { 0%{opacity:0;transform:scale(1.1)} 20%{opacity:1;transform:scale(1)} 100%{opacity:1;transform:scale(1)} }
+.load-logo { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; margin-bottom: 12px; }
+.load-logo em { font-style: italic; color: var(--gold); }
+.load-msg { font-size: 14px; color: var(--muted); font-weight: 300; }
+.load-dots { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
+.load-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: dotPop 1.4s ease-in-out infinite; }
+.load-dot:nth-child(2) { animation-delay: 0.2s; }
+.load-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPop { 0%,80%,100%{transform:scale(0.5);opacity:0.4} 40%{transform:scale(1);opacity:1} }
+
+/* ========== RESULTS ========== */
+#resultsPage {
+  display: none; min-height: 100vh;
+  background: var(--dark2);
+}
+#resultsPage.show { display: block; }
+
+.results-hero {
+  position: relative;
+  height: 55vh; min-height: 320px;
+  overflow: hidden;
+}
+.results-hero img {
+  width: 100%; height: 100%; object-fit: cover;
+  animation: heroZoom 16s ease-in-out infinite alternate;
+}
+.results-hero-grad {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(13,11,9,0.2) 0%, rgba(13,11,9,0.9) 100%);
+}
+.results-hero-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 28px;
+}
+.results-eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+.results-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; margin-bottom: 4px; }
+.results-meta { font-size: 13px; color: var(--muted); }
+
+.results-body { padding: 28px 20px 60px; max-width: 700px; margin: 0 auto; }
+
+/* Dest card */
+.dest-card {
+  border-radius: 20px; overflow: hidden;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  margin-bottom: 28px;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.dest-card:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); }
+
+.dest-hero-wrap { position: relative; }
+.dest-hero-img { width: 100%; height: 220px; object-fit: cover; display: block; }
+.dest-hero-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(to top, rgba(13,11,9,0.95) 0%, transparent 100%);
+  padding: 20px 20px 16px;
+  display: flex; align-items: flex-end; gap: 14px;
+}
+.dest-name-block { flex: 1; }
+.dest-name { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; line-height: 1; }
+.dest-state { font-size: 13px; color: var(--muted); margin-top: 3px; }
+.match-badge {
+  background: var(--gold); color: var(--dark);
+  font-size: 12px; font-weight: 500;
+  padding: 5px 12px; border-radius: 20px; flex-shrink: 0;
+}
+
+.dest-body { padding: 20px; }
+
+.dest-cost-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px; }
+.dest-cost { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; color: var(--gold); }
+.dest-cost-note { font-size: 13px; color: var(--muted); }
+
+.dest-why {
+  font-size: 14px; font-weight: 300; line-height: 1.7;
+  color: rgba(253,250,246,0.75); margin-bottom: 16px;
+  border-left: 1px solid var(--gold);
+  padding-left: 14px; font-style: italic;
+}
+
+.dest-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+.dtag {
+  padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 400;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--border);
+  color: rgba(253,250,246,0.7);
+}
+.dtag.pet { background: rgba(107,143,113,0.15); border-color: rgba(107,143,113,0.3); color: #9fd6a6; }
+
+/* DAY CARDS - full photo strips */
+.days-title { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.days-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 20px; scroll-snap-type: x mandatory; }
+.days-scroll::-webkit-scrollbar { height: 3px; }
+.days-scroll::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+.day-card {
+  flex-shrink: 0; width: 180px; border-radius: 14px;
+  overflow: hidden; background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border); scroll-snap-align: start;
+}
+.day-card-img { width: 100%; height: 120px; object-fit: cover; display: block; }
+.day-card-body { padding: 10px 12px 12px; }
+.day-num { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 4px; }
+.day-plan { font-size: 12px; color: rgba(253,250,246,0.75); line-height: 1.5; }
+
+/* Photo spot */
+.photo-spot-card {
+  border-radius: 14px; overflow: hidden;
+  margin-bottom: 20px; position: relative;
+}
+.photo-spot-img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.photo-spot-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,11,9,0.95) 0%, rgba(13,11,9,0.1) 60%);
+  display: flex; flex-direction: column;
+  justify-content: flex-end; padding: 16px;
+}
+.photo-spot-lbl { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+.photo-spot-txt { font-size: 13px; font-style: italic; color: rgba(253,250,246,0.85); line-height: 1.5; }
+
+.dest-cta {
+  width: 100%; height: 48px; background: rgba(201,147,90,0.15);
+  border: 1px solid var(--gold); border-radius: 10px;
+  color: var(--gold); font-family: 'Outfit', sans-serif;
+  font-size: 14px; font-weight: 500; cursor: pointer;
+  letter-spacing: 0.03em; transition: all 0.2s;
+}
+.dest-cta:hover { background: var(--gold); color: var(--dark); }
+
+.results-footer { text-align: center; padding-top: 8px; }
+.results-footer p { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.restart-btn {
+  background: none; border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 24px;
+  font-family: 'Outfit', sans-serif; font-size: 13px;
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+.restart-btn:hover { border-color: var(--gold); color: var(--white); }
+
+/* option input */
+option { background: #1a1410; }
+/* Global fallback: if any image fails to load, hide the broken icon and let the gradient background show */
+img { background-color: transparent; }
+img.img-error { opacity: 0; }
+</style>
+</head>
+<body>
+
+<!-- ========== LANDING ========== -->
+<div id="landing">
+  <img class="hero-img"
+    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1600&q=85"
+    alt="Stunning travel destination">
+  <div class="hero-gradient"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Your AI travel planner</div>
+    <h1 class="hero-title">Stop searching.<br><em>Tell us your vibe.</em></h1>
+    <p class="hero-sub">No more endless tabs. Tell us your budget, your vibe, who's coming — we'll hand you real destinations, full itineraries, and the exact photos to take.</p>
+
+    <div class="search-bar" onclick="openQuiz()">
+      <div class="search-field">
+        <div class="search-label">Vibe</div>
+        <div class="search-value">Beach, city, adventure...</div>
+      </div>
+      <div class="search-divider"></div>
+      <div class="search-field">
+        <div class="search-label">Budget</div>
+        <div class="search-value">Any amount</div>
+      </div>
+      <div class="search-divider"></div>
+      <div class="search-field">
+        <div class="search-label">When</div>
+        <div class="search-value">Pick your dates</div>
+      </div>
+      <button class="search-btn" onclick="openQuiz()">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M16 16l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Plan my trip
+      </button>
+    </div>
+
+    <div class="trust-row">
+      <span>✦ AI-matched destinations</span>
+      <span>✦ Full itineraries built in</span>
+      <span>✦ Photo spots included</span>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Explore</span>
+    <div class="scroll-line"></div>
+  </div>
+
+  <!-- destination photo strip across bottom -->
+  <div class="dest-strip">
+    <div class="strip-item"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&q=70" alt="Beach"><div class="strip-item-overlay"><span class="strip-item-name">Beach</span></div></div>
+    <div class="strip-item"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=300&q=70" alt="City"><div class="strip-item-overlay"><span class="strip-item-name">City</span></div></div>
+    <div class="strip-item"><img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=70" alt="Mountains"><div class="strip-item-overlay"><span class="strip-item-name">Mountains</span></div></div>
+    <div class="strip-item"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=70" alt="Desert"><div class="strip-item-overlay"><span class="strip-item-name">Desert</span></div></div>
+    <div class="strip-item"><img src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=300&q=70" alt="Tropical"><div class="strip-item-overlay"><span class="strip-item-name">Tropical</span></div></div>
+    <div class="strip-item"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=300&q=70" alt="Celebrate"><div class="strip-item-overlay"><span class="strip-item-name">Celebrate</span></div></div>
+  </div>
+</div>
+
+<!-- ========== BELOW THE FOLD — DENSE DESTINATION GRID ========== -->
+<div class="discover-section">
+  <div class="discover-inner">
+    <div class="discover-head">
+      <div>
+        <div class="discover-eyebrow">Trending right now</div>
+        <h2 class="discover-title">Where everyone's headed</h2>
+      </div>
+      <button class="discover-cta" onclick="openQuiz()">Plan my own trip →</button>
+    </div>
+
+    <div class="discover-grid">
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500&q=80" alt="Road trip">
+        <div class="disc-badge">🚗 Road trip</div>
+        <div class="disc-info">
+          <div class="disc-name">Pacific Coast Highway</div>
+          <div class="disc-meta">Scenic drive · from $750</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=500&q=80" alt="Tulum">
+        <div class="disc-badge">🔥 Trending</div>
+        <div class="disc-info">
+          <div class="disc-name">Tulum, Mexico</div>
+          <div class="disc-meta">Beach club energy · from $1,900</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1545893835-abaa8e895dc9?w=500&q=80" alt="Nashville">
+        <div class="disc-info">
+          <div class="disc-name">Nashville, TN</div>
+          <div class="disc-meta">Music & nightlife · from $1,000</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Sedona">
+        <div class="disc-badge">✨ Editor's pick</div>
+        <div class="disc-info">
+          <div class="disc-name">Sedona, AZ</div>
+          <div class="disc-meta">Red rocks & wellness · from $1,400</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&q=80" alt="Traverse City">
+        <div class="disc-info">
+          <div class="disc-name">Traverse City, MI</div>
+          <div class="disc-meta">Lakes & wine country · from $650</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=500&q=80" alt="Asheville">
+        <div class="disc-info">
+          <div class="disc-name">Asheville, NC</div>
+          <div class="disc-meta">Mountains & arts · from $700</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=500&q=80" alt="Santorini">
+        <div class="disc-badge">🔥 Trending</div>
+        <div class="disc-info">
+          <div class="disc-name">Santorini, Greece</div>
+          <div class="disc-meta">Cliffside views · from $2,400</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1496614932623-0a3a9743552e?w=500&q=80" alt="Lake Tahoe">
+        <div class="disc-info">
+          <div class="disc-name">Lake Tahoe, CA</div>
+          <div class="disc-meta">Mountains & water · from $900</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1518684079-3c830dcef090?w=500&q=80" alt="New Orleans">
+        <div class="disc-info">
+          <div class="disc-name">New Orleans, LA</div>
+          <div class="disc-meta">Food & culture · from $850</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vibe category row -->
+    <div class="vibe-row-head">Browse by vibe</div>
+    <div class="vibe-cat-row">
+      <div class="vibe-cat" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&q=75" alt="Beach">
+        <span>Beach & coastal</span>
+      </div>
+      <div class="vibe-cat" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=300&q=75" alt="City">
+        <span>City energy</span>
+      </div>
+      <div class="vibe-cat" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=75" alt="Nature">
+        <span>Nature & peaks</span>
+      </div>
+      <div class="vibe-cat" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=300&q=75" alt="Wellness">
+        <span>Spa & wellness</span>
+      </div>
+      <div class="vibe-cat" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&q=75" alt="Food">
+        <span>Food & wine</span>
+      </div>
+      <div class="vibe-cat" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=300&q=75" alt="Road trip">
+        <span>Road trip</span>
+      </div>
+      <div class="vibe-cat" onclick="openQuiz()">
+        <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=300&q=75" alt="Celebrate">
+        <span>Party & celebrate</span>
+      </div>
+    </div>
+
+    <!-- Bottom CTA banner -->
+    <div class="banner-cta">
+      <div class="banner-text">
+        <div class="banner-eyebrow">Stop the 14-tab search</div>
+        <div class="banner-title">Tell us your vibe.<br>We'll handle the rest.</div>
+      </div>
+      <button class="banner-btn" onclick="openQuiz()">Start planning →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== QUIZ OVERLAY ========== -->
+<div id="quizOverlay">
+  <div class="quiz-backdrop" onclick="closeQuiz()"></div>
+  <div class="quiz-panel">
+    <div class="quiz-header">
+      <div class="quiz-logo">Lets<em>goo</em></div>
+      <button class="quiz-close" onclick="closeQuiz()">×</button>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+
+    <!-- STEP 1: VIBE -->
+    <div class="step active" id="s1">
+      <div class="step-label">Step 1 of 5</div>
+      <div class="step-title">What's your travel vibe?</div>
+      <div class="step-sub">Pick everything that speaks to you</div>
+      <div class="vibe-grid">
+        <div class="vibe-tile" onclick="toggleVibe(this,'beach')">
+          <div class="slideshow">
+            <img class="slide active" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75" alt="Beach">
+            <img class="slide" src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&q=75" alt="Beach">
+            <img class="slide" src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&q=75" alt="Beach">
+          </div>
+          <div class="vibe-tile-overlay">
+            <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="vibe-name">Beach & ocean</div>
+            <div class="vibe-desc">Sun, waves, seafood</div>
+          </div>
+        </div>
+        <div class="vibe-tile" onclick="toggleVibe(this,'city')">
+          <div class="slideshow">
+            <img class="slide active" src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=75" alt="City">
+            <img class="slide" src="https://images.unsplash.com/photo-1496588152823-86ff7695e68f?w=400&q=75" alt="City">
+            <img class="slide" src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=400&q=75" alt="City">
+          </div>
+          <div class="vibe-tile-overlay">
+            <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="vibe-name">City energy</div>
+            <div class="vibe-desc">Culture, food, nights</div>
+          </div>
+        </div>
+        <div class="vibe-tile" onclick="toggleVibe(this,'nature')">
+          <div class="slideshow">
+            <img class="slide active" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75" alt="Nature">
+            <img class="slide" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&q=75" alt="Nature">
+            <img class="slide" src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&q=75" alt="Nature">
+          </div>
+          <div class="vibe-tile-overlay">
+            <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="vibe-name">Nature & peaks</div>
+            <div class="vibe-desc">Hike, breathe, views</div>
+          </div>
+        </div>
+        <div class="vibe-tile" onclick="toggleVibe(this,'wellness')">
+          <div class="slideshow">
+            <img class="slide active" src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=75" alt="Spa">
+            <img class="slide" src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=75" alt="Spa">
+            <img class="slide" src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=400&q=75" alt="Spa">
+          </div>
+          <div class="vibe-tile-overlay">
+            <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="vibe-name">Spa & wellness</div>
+            <div class="vibe-desc">Reset, restore, slow</div>
+          </div>
+        </div>
+        <div class="vibe-tile" onclick="toggleVibe(this,'food')">
+          <div class="slideshow">
+            <img class="slide active" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=75" alt="Food">
+            <img class="slide" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400&q=75" alt="Food">
+            <img class="slide" src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=75" alt="Food">
+          </div>
+          <div class="vibe-tile-overlay">
+            <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="vibe-name">Food & wine</div>
+            <div class="vibe-desc">Eat, sip, discover</div>
+          </div>
+        </div>
+        <div class="vibe-tile" onclick="toggleVibe(this,'celebrate')">
+          <div class="slideshow">
+            <img class="slide active" src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=75" alt="Celebrate">
+            <img class="slide" src="https://images.unsplash.com/photo-1496843916299-590492c751f4?w=400&q=75" alt="Celebrate">
+            <img class="slide" src="https://images.unsplash.com/photo-1496337589254-7e19d01cec44?w=400&q=75" alt="Celebrate">
+          </div>
+          <div class="vibe-tile-overlay">
+            <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="vibe-name">Party & celebrate</div>
+            <div class="vibe-desc">Birthdays, girls trips</div>
+          </div>
+        </div>
+        <div class="vibe-tile" onclick="toggleVibe(this,'roadtrip')">
+          <div class="slideshow">
+            <img class="slide active" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&q=75" alt="Road trip">
+            <img class="slide" src="https://images.unsplash.com/photo-1473655100735-c923d8965ae1?w=400&q=75" alt="Road trip">
+            <img class="slide" src="https://images.unsplash.com/photo-1530841344095-fbe3ec8a0f2c?w=400&q=75" alt="Road trip">
+          </div>
+          <div class="vibe-tile-overlay">
+            <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="vibe-name">Road trip</div>
+            <div class="vibe-desc">Scenic drives, open road</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn" onclick="goStep(2)">Continue →</button>
+    </div>
+
+    <!-- STEP 2: WHO -->
+    <div class="step" id="s2">
+      <div class="step-label">Step 2 of 5</div>
+      <div class="step-title">Who's on this trip?</div>
+      <div class="step-sub">Exact headcount — we'll plan around everyone</div>
+      <div class="traveler-block">
+        <div class="traveler-row">
+          <div><div class="trav-label">Adults</div><div class="trav-sub">18 and older</div></div>
+          <div class="counter">
+            <button class="cnt-btn" onclick="chg('adults',-1)">−</button>
+            <div class="cnt-val" id="v-adults">2</div>
+            <button class="cnt-btn" onclick="chg('adults',1)">+</button>
+          </div>
+        </div>
+        <div class="traveler-row">
+          <div><div class="trav-label">Children</div><div class="trav-sub">Under 18</div></div>
+          <div class="counter">
+            <button class="cnt-btn" onclick="chg('children',-1)">−</button>
+            <div class="cnt-val" id="v-children">0</div>
+            <button class="cnt-btn" onclick="chg('children',1)">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="child-ages" id="childAges">
+        <div class="ages-label">Ages of children</div>
+        <div class="age-pills" id="agePills"></div>
+      </div>
+      <div class="field-group" style="margin-top:18px;">
+        <label class="field-lbl">Occasion</label>
+        <select class="field" id="occasion">
+          <option>Just a trip</option><option>Birthday</option>
+          <option>Honeymoon</option><option>Anniversary</option>
+          <option>Bachelorette / bachelor</option><option>Girls / guys trip</option>
+          <option>Family reunion</option><option>Reset / self-care</option>
+        </select>
+      </div>
+      <button class="btn" onclick="goStep(3)">Continue →</button>
+      <button class="btn-ghost" onclick="goStep(1)">← Back</button>
+    </div>
+
+    <!-- STEP 3: BUDGET -->
+    <div class="step" id="s3">
+      <div class="step-label">Step 3 of 5</div>
+      <div class="step-title">What's the budget?</div>
+      <div class="step-sub">Rough is totally fine</div>
+      <div class="big-budget" id="bigBudget">$2,500</div>
+      <div class="budget-note">per person, all-in</div>
+      <input type="range" min="500" max="15000" step="100" value="2500" oninput="setBudget(this.value)">
+      <div class="range-ends"><span>$500</span><span>$15k+</span></div>
+      <div class="field-group">
+        <label class="field-lbl">Departing from</label>
+        <input class="field" type="text" id="departure" placeholder="City or ZIP" value="Chicago, IL">
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-lbl">Trip length</label>
+          <select class="field" id="nights">
+            <option>Weekend (2–3 nights)</option>
+            <option selected>4–6 nights</option>
+            <option>7–10 nights</option>
+            <option>2+ weeks</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-lbl">Travel window</label>
+          <select class="field" id="twindow">
+            <option>Flexible</option>
+            <option selected>Summer 2025</option>
+            <option>Fall 2025</option>
+            <option>Winter 2025–26</option>
+            <option>Spring 2026</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn" onclick="goStep(4)">Continue →</button>
+      <button class="btn-ghost" onclick="goStep(2)">← Back</button>
+    </div>
+
+    <!-- STEP 4: TRANSPORT -->
+    <div class="step" id="s4">
+      <div class="step-label">Step 4 of 5</div>
+      <div class="step-title">How are you getting there?</div>
+      <div class="step-sub">We'll build the route around you</div>
+      <div class="transport-grid">
+        <div class="trans-card selected" onclick="selTransport(this,'fly')">
+          <img class="trans-img" src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=400&q=75" alt="Fly">
+          <div class="trans-label">✈️ Fly there<div class="trans-sub">Best flight deals found</div></div>
+        </div>
+        <div class="trans-card" onclick="selTransport(this,'road trip')">
+          <img class="trans-img" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&q=75" alt="Drive">
+          <div class="trans-label">🚗 Road trip<div class="trans-sub">Scenic routes & stops</div></div>
+        </div>
+        <div class="trans-card" onclick="selTransport(this,'either')">
+          <img class="trans-img" src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=400&q=75" alt="Either">
+          <div class="trans-label">🗺️ Either works<div class="trans-sub">Show me both options</div></div>
+        </div>
+        <div class="trans-card" onclick="selTransport(this,'train')">
+          <img class="trans-img" src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=400&q=75" alt="Train">
+          <div class="trans-label">🚆 Train / Amtrak<div class="trans-sub">Scenic rail routes</div></div>
+        </div>
+      </div>
+      <button class="btn" onclick="goStep(5)">Continue →</button>
+      <button class="btn-ghost" onclick="goStep(3)">← Back</button>
+    </div>
+
+    <!-- STEP 5: PET + PREFS -->
+    <div class="step" id="s5">
+      <div class="step-label">Step 5 of 5</div>
+      <div class="step-title">Last few things</div>
+      <div class="step-sub">Almost there — this makes your trip perfect</div>
+      <img class="pet-hero" src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=700&q=80" alt="Pet travel">
+      <div style="font-size:15px;font-weight:500;margin-bottom:4px;">What about your pet?</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">We'll plan around them no matter what</div>
+      <div class="pet-opts">
+        <div class="pet-opt" onclick="selPet(this,'coming')">
+          <span class="pet-icon">🐾</span><div class="pet-lbl">Coming with me</div>
+        </div>
+        <div class="pet-opt" onclick="selPet(this,'sitter')">
+          <span class="pet-icon">🏠</span><div class="pet-lbl">Need a sitter</div>
+        </div>
+        <div class="pet-opt on" onclick="selPet(this,'none')">
+          <span class="pet-icon">✌️</span><div class="pet-lbl">No pet</div>
+        </div>
+      </div>
+      <div class="sitter-section" id="sitterSec">
+        <div class="sitter-hdr">🔍 Top-rated sitters near you</div>
+        <div id="sitterList"></div>
+      </div>
+      <div class="toggles-wrap">
+        <div class="toggle-row">
+          <div class="tgl-txt"><div class="tl">Avoid tourist traps</div><div class="ts">Favor local & hidden gems</div></div>
+          <div class="tgl on" onclick="this.classList.toggle('on')"><div class="tgl-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tgl-txt"><div class="tl">Photo & content spot ideas</div><div class="ts">Shot list, golden hour, best angles</div></div>
+          <div class="tgl on" onclick="this.classList.toggle('on')"><div class="tgl-dot"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="tgl-txt"><div class="tl">Keep itinerary relaxed</div><div class="ts">Space to breathe, not overpacked</div></div>
+          <div class="tgl" onclick="this.classList.toggle('on')"><div class="tgl-dot"></div></div>
+        </div>
+      </div>
+      <button class="btn" onclick="buildTrip()" style="background:var(--gold);">Find my destinations ✦</button>
+      <button class="btn-ghost" onclick="goStep(4)">← Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== LOADING ========== -->
+<div id="loadingScreen">
+  <div class="load-reel">
+    <img class="reel-img" src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&q=75" alt="">
+    <img class="reel-img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=75" alt="">
+    <img class="reel-img" src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=300&q=75" alt="">
+    <img class="reel-img" src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=300&q=75" alt="">
+    <img class="reel-img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=75" alt="">
+  </div>
+  <div class="load-logo">Lets<em>goo</em></div>
+  <div class="load-msg" id="loadMsg">Reading your vibe...</div>
+  <div class="load-dots"><div class="load-dot"></div><div class="load-dot"></div><div class="load-dot"></div></div>
+</div>
+
+<!-- ========== RESULTS ========== -->
+<div id="resultsPage">
+  <div class="results-hero">
+    <img id="resultsHeroImg" src="" alt="Results">
+    <div class="results-hero-grad"></div>
+    <div class="results-hero-content">
+      <div class="results-eyebrow">AI-matched for your vibe</div>
+      <div class="results-title" id="resultsTitle">Your top destinations</div>
+      <div class="results-meta" id="resultsMeta"></div>
+    </div>
+  </div>
+  <div class="results-body">
+    <div id="resultsContainer"></div>
+    <div class="results-footer">
+      <p>Want different options? Adjust your vibe.</p>
+      <button class="restart-btn" onclick="location.reload()">← Start over</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const S = {
+  vibes:[], adults:2, children:0, childAges:[],
+  occasion:'Just a trip', budget:2500,
+  departure:'Chicago, IL', nights:'4–6 nights',
+  twindow:'Summer 2025', transport:'fly',
+  pet:'none'
+};
+
+const DESTS = [
+  {
+    name:'Traverse City', state:'Michigan',
+    heroImg:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=900&q=85',
+    vibes:['beach','nature','food','roadtrip'], minB:900, maxB:6000,
+    trans:['road trip','fly','either'], cost:b=>Math.round(b*.72),
+    why:"You get dunes, Great Lakes beaches, incredible wine country, and food scenes that punch way above their weight — without the crowds of a big coastal city.",
+    tags:['Great Lakes beach','Wine country','Scenic drive','Hidden gem'],
+    days:[
+      {plan:'Arrive & check in. Dinner downtown on Front Street — get the whitefish.',img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&q=75'},
+      {plan:'Sleeping Bear Dunes — climb them, then swim in crystal-clear Lake Michigan.',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&q=75'},
+      {plan:'Old Mission Peninsula wine trail. Farm-to-table lunch at a vineyard.',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&q=75'},
+      {plan:'Kayaking, waterfall hike, or cherry farm visit. Sunset on the pier.',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=75'}
+    ],
+    photoSpot:'Sleeping Bear Dunes overlook — 2 hrs before sunset. Bring something white or cream. The contrast against the blue water is unreal.',
+    photoImg:'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&q=80',
+    pet:true
+  },
+  {
+    name:'Nashville', state:'Tennessee',
+    heroImg:'https://images.unsplash.com/photo-1545893835-abaa8e895dc9?w=900&q=85',
+    vibes:['city','food','celebrate'], minB:1200, maxB:8000,
+    trans:['fly','either'], cost:b=>Math.round(b*.84),
+    why:"Nashville delivers energy, food, and nightlife better than most cities twice its size. Built for celebrating — and absolutely built for content.",
+    tags:['Food scene','Live music','Nightlife','Walkable'],
+    days:[
+      {plan:'Broadway honky-tonks, Prince\'s hot chicken, late-night rooftop bar.',img:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=300&q=75'},
+      {plan:'East Nashville brunch, boutique shops, Grimey\'s Records.',img:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=300&q=75'},
+      {plan:'12 South & The Gulch mural. Sunset at Shelby Bottoms Park.',img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&q=75'},
+      {plan:'Day trip to Franklin historic downtown or Lynchburg.',img:'https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=300&q=75'}
+    ],
+    photoSpot:'The Gulch mural wall at golden hour — wings on the wall, golden light. The most iconic shot in Nashville. You need it.',
+    photoImg:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&q=80',
+    pet:false
+  },
+  {
+    name:'Sedona', state:'Arizona',
+    heroImg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+    vibes:['nature','wellness','food'], minB:1500, maxB:12000,
+    trans:['fly','either'], cost:b=>Math.round(b*.91),
+    why:"Red rocks designed for Instagram. World-class spas. The kind of destination that genuinely resets you — and photographs like a movie set.",
+    tags:['Red rock views','Spa & wellness','Hiking','Photography dream'],
+    days:[
+      {plan:'Drive from Phoenix. Cathedral Rock sunset hike — arrive 2 hrs early.',img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=75'},
+      {plan:'Half-day luxury spa. Afternoon Devil\'s Bridge trail (book the permit).',img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=300&q=75'},
+      {plan:'Tlaquepaque arts village. Slide Rock State Park natural waterslides.',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&q=75'},
+      {plan:'Sunrise hot air balloon — bucket list. Afternoon Jeep tour.',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=75'}
+    ],
+    photoSpot:'Cathedral Rock from Baldwin Trail, 90 min before sunset. Wear earthy tones — rust, terracotta, ivory pop against those rocks.',
+    photoImg:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80',
+    pet:true
+  },
+  {
+    name:'Tulum', state:'Mexico',
+    heroImg:'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=900&q=85',
+    vibes:['beach','wellness','celebrate'], minB:2000, maxB:15000,
+    trans:['fly','either'], cost:b=>Math.round(b*.95),
+    why:"The most aesthetic beach destination in North America right now. Cenotes, rooftop infinity pools, jungle-chic hotels. Built for the content creator mindset.",
+    tags:['Cenotes','Luxury vibe','Content gold','Beach clubs'],
+    days:[
+      {plan:'Hotel strip beach club. Rooftop sunset with a mezcal in hand.',img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&q=75'},
+      {plan:'Gran Cenote at 8am before crowds. Papaya Playa Project for lunch.',img:'https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=300&q=75'},
+      {plan:'Tulum ruins at sunrise. Mayan jungle cenote hike in the afternoon.',img:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=300&q=75'},
+      {plan:'Cobá pyramid climb. Cenote Dos Ojos snorkel — the most beautiful water.',img:'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=300&q=75'}
+    ],
+    photoSpot:'Gran Cenote at 8am — turquoise water, stalactites, zero tourists. Wear white. The photos look like National Geographic.',
+    photoImg:'https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=600&q=80',
+    pet:false
+  },
+  {
+    name:'Asheville', state:'North Carolina',
+    heroImg:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=900&q=85',
+    vibes:['nature','food','wellness','roadtrip'], minB:900, maxB:5000,
+    trans:['fly','road trip','either'], cost:b=>Math.round(b*.78),
+    why:"The best-kept secret in the Southeast. Arts scene, James Beard restaurants, mountain hiking 20 minutes from downtown. And Biltmore Estate.",
+    tags:['Arts district','Mountain hiking','Craft beer','Hidden gem'],
+    days:[
+      {plan:'River Arts District studios & murals. Dinner on Lexington Ave.',img:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=300&q=75'},
+      {plan:'Blue Ridge Parkway overlooks. Biltmore Estate afternoon.',img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&q=75'},
+      {plan:'Chimney Rock State Park hike. Farm-to-table dinner.',img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&q=75'},
+      {plan:'Hot Springs day trip. Local craft brewery trail.',img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=300&q=75'}
+    ],
+    photoSpot:'Blue Ridge Parkway Craggy Gardens overlook at golden hour. Wildflowers mid-summer. It\'s everything.',
+    photoImg:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80',
+    pet:true
+  }
+];
+
+const SITTERS = [
+  {name:'Sarah M.',rating:'⭐ 4.97 · 312 reviews',specialty:'Dogs & cats · 3 miles away',price:'$35/night',av:'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=70'},
+  {name:'James T.',rating:'⭐ 4.93 · 198 reviews',specialty:'Dogs only · 1.5 miles away',price:'$28/night',av:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&q=70'},
+  {name:'Rover Certified',rating:'⭐ 4.9 · 500+ reviews',specialty:'All pets · Insured & certified',price:'$22/night',av:'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=100&q=70'}
+];
+
+// ---- NAV ----
+// ---- SLIDESHOW: rotate through 3 images per tile, staggered ----
+function initSlideshows() {
+  document.querySelectorAll('.slideshow').forEach((ss, idx) => {
+    const slides = ss.querySelectorAll('.slide');
+    if (slides.length < 2) return;
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 3500 + (idx % 4) * 400); // stagger so tiles don't flip in sync
+  });
+}
+document.addEventListener('DOMContentLoaded', initSlideshows);
+
+function openQuiz() { document.getElementById('quizOverlay').classList.add('open'); goStep(1); }
+function closeQuiz() { document.getElementById('quizOverlay').classList.remove('open'); }
+
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  document.getElementById('progFill').style.width = (n*20)+'%';
+}
+
+// ---- VIBE ----
+function toggleVibe(el,key) {
+  el.classList.toggle('selected');
+  if(el.classList.contains('selected')){ if(!S.vibes.includes(key)) S.vibes.push(key); }
+  else { S.vibes=S.vibes.filter(v=>v!==key); }
+}
+
+// ---- TRAVELERS ----
+function chg(type,delta){
+  S[type]=Math.max(type==='adults'?1:0, S[type]+delta);
+  document.getElementById('v-'+type).textContent=S[type];
+  if(type==='children') renderAges();
+}
+function renderAges(){
+  const wrap=document.getElementById('childAges');
+  const pills=document.getElementById('agePills');
+  if(S.children===0){wrap.classList.remove('show');S.childAges=[];return;}
+  wrap.classList.add('show');
+  while(S.childAges.length<S.children) S.childAges.push(5);
+  while(S.childAges.length>S.children) S.childAges.pop();
+  pills.innerHTML=S.childAges.map((a,i)=>`
+    <div class="age-pill">
+      <span class="age-pill-lbl">Child ${i+1}:</span>
+      <select onchange="S.childAges[${i}]=parseInt(this.value)">
+        ${Array.from({length:17},(_,x)=>`<option value="${x+1}" ${x+1===a?'selected':''}>${x+1} yr${x>0?'s':''}</option>`).join('')}
+      </select>
+    </div>`).join('');
+}
+
+// ---- BUDGET ----
+function setBudget(v){ S.budget=parseInt(v); document.getElementById('bigBudget').textContent='$'+parseInt(v).toLocaleString(); }
+
+// ---- TRANSPORT ----
+function selTransport(el,key){
+  document.querySelectorAll('.trans-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected'); S.transport=key;
+}
+
+// ---- PET ----
+function selPet(el,key){
+  document.querySelectorAll('.pet-opt').forEach(o=>o.classList.remove('on'));
+  el.classList.add('on'); S.pet=key;
+  const sec=document.getElementById('sitterSec');
+  if(key==='sitter'){ sec.classList.add('show'); loadSitters(); }
+  else sec.classList.remove('show');
+}
+function loadSitters(){
+  const el=document.getElementById('sitterList');
+  el.innerHTML='<div style="text-align:center;padding:12px;font-size:13px;color:var(--muted)">🔍 Finding sitters near '+S.departure+'...</div>';
+  setTimeout(()=>{
+    el.innerHTML=SITTERS.map(s=>`
+      <div class="sitter-row">
+        <img class="sitter-av" src="${s.av}" alt="${s.name}">
+        <div class="sitter-info"><div class="sitter-nm">${s.name}</div><div class="sitter-dt">${s.rating} · ${s.specialty}</div></div>
+        <div class="sitter-pr">${s.price}</div>
+      </div>`).join('')+
+      `<div style="text-align:center;margin-top:6px"><a href="https://www.rover.com" target="_blank" style="font-size:12px;color:var(--gold)">View all on Rover.com →</a></div>`;
+  },1500);
+}
+
+// ---- SCORE ----
+function score(d){
+  let s=0;
+  d.vibes.forEach(v=>{if(S.vibes.includes(v))s+=24;});
+  if(S.budget>=d.minB&&S.budget<=d.maxB)s+=20;
+  else if(S.budget<d.minB)s-=25;
+  if(d.trans.includes(S.transport))s+=14;
+  else if(S.transport==='either')s+=8;
+  if(S.pet==='coming'&&d.pet)s+=10;
+  if(S.pet==='coming'&&!d.pet)s-=20;
+  return Math.min(Math.max(s,32),99);
+}
+
+// ---- BUILD ----
+function buildTrip(){
+  S.departure=document.getElementById('departure').value;
+  S.nights=document.getElementById('nights').value;
+  S.twindow=document.getElementById('twindow').value;
+  S.occasion=document.getElementById('occasion').value;
+  if(S.vibes.length===0) S.vibes=['beach','food'];
+  closeQuiz();
+  const ls=document.getElementById('loadingScreen');
+  ls.classList.add('show');
+  const msgs=['Reading your vibe...','Matching destinations...','Checking the budget...','Building itineraries...','Adding photo spots...','Almost ready...'];
+  let mi=0;
+  const iv=setInterval(()=>{ if(++mi<msgs.length) document.getElementById('loadMsg').textContent=msgs[mi]; },700);
+  setTimeout(()=>{ clearInterval(iv); ls.classList.remove('show'); showResults(); },4400);
+}
+
+// ---- RESULTS ----
+function showResults(){
+  const top=DESTS.map(d=>({...d,sc:score(d)})).sort((a,b)=>b.sc-a.sc).slice(0,3);
+  document.getElementById('resultsHeroImg').src=top[0].heroImg;
+  const who=S.adults+' adult'+(S.adults>1?'s':'')+(S.children>0?` + ${S.children} child${S.children>1?'ren':''}`:'');
+  document.getElementById('resultsTitle').textContent='Your top '+top.length+' destinations';
+  document.getElementById('resultsMeta').textContent='$'+S.budget.toLocaleString()+' budget · '+S.nights+' · '+who+' · from '+S.departure;
+
+  const con=document.getElementById('resultsContainer');
+  con.innerHTML='';
+  top.forEach(d=>{
+    const cost=d.cost(S.budget);
+    const el=document.createElement('div');
+    el.className='dest-card';
+    el.innerHTML=`
+      <div class="dest-hero-wrap">
+        <img class="dest-hero-img" src="${d.heroImg}" alt="${d.name}">
+        <div class="dest-hero-bar">
+          <div class="dest-name-block">
+            <div class="dest-name">${d.name}</div>
+            <div class="dest-state">${d.state}</div>
+          </div>
+          <div class="match-badge">${d.sc}% match</div>
+        </div>
+      </div>
+      <div class="dest-body">
+        <div class="dest-cost-row">
+          <div class="dest-cost">~$${cost.toLocaleString()}</div>
+          <div class="dest-cost-note">per person, all-in</div>
+        </div>
+        <div class="dest-why">${d.why}</div>
+        <div class="dest-tags">
+          ${d.tags.map(t=>`<span class="dtag">${t}</span>`).join('')}
+          ${S.pet==='coming'&&d.pet?'<span class="dtag pet">🐾 Pet friendly</span>':''}
+        </div>
+        <div class="days-title">Your itinerary — scroll to see all days</div>
+        <div class="days-scroll">
+          ${d.days.map((dy,i)=>`
+            <div class="day-card">
+              <img class="day-card-img" src="${dy.img}" alt="Day ${i+1}">
+              <div class="day-card-body">
+                <div class="day-num">Day ${i+1}</div>
+                <div class="day-plan">${dy.plan}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+        <div class="photo-spot-card">
+          <img class="photo-spot-img" src="${d.photoImg}" alt="Photo spot">
+          <div class="photo-spot-overlay">
+            <div class="photo-spot-lbl">📸 Must-get photo spot</div>
+            <div class="photo-spot-txt">${d.photoSpot}</div>
+          </div>
+        </div>
+        <button class="dest-cta">Explore ${d.name} →</button>
+      </div>`;
+    con.appendChild(el);
+  });
+
+  document.getElementById('resultsPage').classList.add('show');
+  window.scrollTo(0,0);
+}
+// Global: gracefully hide any image that fails to load instead of showing a broken icon
+document.querySelectorAll('img').forEach(img => {
+  img.addEventListener('error', () => { img.classList.add('img-error'); }, { once: true });
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('error', () => { img.classList.add('img-error'); }, { once: true });
+  });
+});
+</script>
+</body>
+</html>
