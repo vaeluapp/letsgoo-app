@@ -931,14 +931,14 @@ img.img-error { opacity: 0; }
         </div>
       </div>
       <div class="disc-card" onclick="openQuiz()">
-        <img src="https://images.unsplash.com/photo-1545893835-abaa8e895dc9?w=500&q=80" alt="Nashville">
+        <img src="https://images.unsplash.com/photo-1545893835-abaa8e895dc9?w=500&q=80" alt="Nashville" data-photo-query="Nashville Tennessee skyline downtown">
         <div class="disc-info">
           <div class="disc-name">Nashville, TN</div>
           <div class="disc-meta">Music & nightlife · from $1,000</div>
         </div>
       </div>
       <div class="disc-card" onclick="openQuiz()">
-        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Sedona">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Sedona" data-photo-query="Sedona Arizona red rocks landscape">
         <div class="disc-badge">✨ Editor's pick</div>
         <div class="disc-info">
           <div class="disc-name">Sedona, AZ</div>
@@ -960,7 +960,7 @@ img.img-error { opacity: 0; }
         </div>
       </div>
       <div class="disc-card" onclick="openQuiz()">
-        <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=500&q=80" alt="Santorini">
+        <img src="https://images.unsplash.com/photo-1469796466635-455ede028aca?w=500&q=80" alt="Santorini" data-photo-query="Santorini Greece cliffside white buildings">
         <div class="disc-badge">🔥 Trending</div>
         <div class="disc-info">
           <div class="disc-name">Santorini, Greece</div>
@@ -1431,6 +1431,41 @@ function initSlideshows() {
   });
 }
 document.addEventListener('DOMContentLoaded', initSlideshows);
+document.addEventListener('DOMContentLoaded', () => upgradeAllPhotos());
+
+// ---- PHOTO FETCHING: get verified, accurate photos from real Unsplash API ----
+const photoCache = {}; // avoid duplicate calls for the same query in one session
+
+async function getVerifiedPhoto(query, fallbackUrl) {
+  if (photoCache[query]) return photoCache[query];
+  try {
+    const res = await fetch(`/.netlify/functions/get-photo?query=${encodeURIComponent(query)}`);
+    if (!res.ok) throw new Error('Photo fetch failed');
+    const data = await res.json();
+    photoCache[query] = data.url;
+    return data.url;
+  } catch (err) {
+    console.warn('Photo fetch failed for query:', query, err);
+    return fallbackUrl || '';
+  }
+}
+
+// Replace an <img> element's src once a verified photo is fetched,
+// keeping the existing fallback image visible until then (no flash of broken image)
+async function upgradeImage(imgEl, query) {
+  const fallback = imgEl.src;
+  const verifiedUrl = await getVerifiedPhoto(query, fallback);
+  if (verifiedUrl && verifiedUrl !== fallback) {
+    imgEl.src = verifiedUrl;
+  }
+}
+
+// Run through all elements with data-photo-query and upgrade them to verified photos
+function upgradeAllPhotos(root = document) {
+  root.querySelectorAll('img[data-photo-query]').forEach(img => {
+    upgradeImage(img, img.getAttribute('data-photo-query'));
+  });
+}
 
 function openQuiz() { document.getElementById('quizOverlay').classList.add('open'); goStep(1); }
 function closeQuiz() { document.getElementById('quizOverlay').classList.remove('open'); }
@@ -1561,7 +1596,7 @@ async function buildTrip(){
     if (result && result.destinations && result.destinations.length > 0) {
       clearInterval(iv);
       ls.classList.remove('show');
-      showResults(result.destinations, true); // true = AI-generated
+      await showResults(result.destinations, true); // true = AI-generated
       return;
     }
     throw new Error('No destinations returned');
@@ -1590,18 +1625,18 @@ async function buildTrip(){
 }
 
 // ---- RESULTS (now accepts AI-generated or fallback destinations) ----
-function showResults(destinations, isAiGenerated){
+async function showResults(destinations, isAiGenerated){
   const top = destinations.slice(0, 3);
 
   // For AI-generated destinations we don't have curated hero images yet,
-  // so pull a relevant Unsplash photo by search term as a graceful default.
-  top.forEach(d => {
+  // so fetch a verified, accurate photo from the real Unsplash API.
+  await Promise.all(top.map(async d => {
     if (!d.heroImg) {
-      const query = encodeURIComponent(d.name + ' ' + (d.region || '') + ' travel');
-      d.heroImg = `https://source.unsplash.com/900x600/?${query}`;
+      const query = `${d.name} ${d.region || ''} travel landscape`;
+      d.heroImg = await getVerifiedPhoto(query, 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80');
     }
     if (!d.photoImg) d.photoImg = d.heroImg;
-  });
+  }));
 
   document.getElementById('resultsHeroImg').src = top[0].heroImg;
   const who = S.adults+' adult'+(S.adults>1?'s':'')+(S.children>0?` + ${S.children} child${S.children>1?'ren':''}`:'');
