@@ -1514,8 +1514,8 @@ function score(d){
   return Math.min(Math.max(s,32),99);
 }
 
-// ---- BUILD ----
-function buildTrip(){
+// ---- BUILD (now calls the real AI backend) ----
+async function buildTrip(){
   S.departure=document.getElementById('departure').value;
   S.nights=document.getElementById('nights').value;
   S.twindow=document.getElementById('twindow').value;
@@ -1527,21 +1527,103 @@ function buildTrip(){
   const msgs=['Reading your vibe...','Matching destinations...','Checking the budget...','Building itineraries...','Adding photo spots...','Almost ready...'];
   let mi=0;
   const iv=setInterval(()=>{ if(++mi<msgs.length) document.getElementById('loadMsg').textContent=msgs[mi]; },700);
-  setTimeout(()=>{ clearInterval(iv); ls.classList.remove('show'); showResults(); },4400);
+
+  // Minimum loading time so the experience never feels jarring/instant
+  const minWait = new Promise(resolve => setTimeout(resolve, 3000));
+
+  try {
+    const apiCall = fetch('/.netlify/functions/plan-trip', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        vibes: S.vibes,
+        adults: S.adults,
+        children: S.children,
+        childAges: S.childAges,
+        occasion: S.occasion,
+        budget: S.budget,
+        departure: S.departure,
+        nights: S.nights,
+        travelWindow: S.twindow,
+        transport: S.transport,
+        pet: S.pet,
+        avoidTourist: true,
+        contentMode: true,
+        relaxedPace: false
+      })
+    }).then(r => {
+      if (!r.ok) throw new Error('API error ' + r.status);
+      return r.json();
+    });
+
+    const [result] = await Promise.all([apiCall, minWait]);
+
+    if (result && result.destinations && result.destinations.length > 0) {
+      clearInterval(iv);
+      ls.classList.remove('show');
+      showResults(result.destinations, true); // true = AI-generated
+      return;
+    }
+    throw new Error('No destinations returned');
+
+  } catch (err) {
+    console.warn('AI trip planning failed, falling back to curated picks:', err);
+    await minWait;
+    clearInterval(iv);
+    ls.classList.remove('show');
+    // Fallback: use the original hardcoded scoring so the site never breaks
+    const top = DESTS.map(d => ({...d, sc: score(d)})).sort((a,b)=>b.sc-a.sc).slice(0,3);
+    const fallbackDestinations = top.map(d => ({
+      name: d.name,
+      region: d.state,
+      estimatedCostPerPerson: d.cost(S.budget),
+      matchScore: d.sc,
+      why: d.why,
+      tags: d.tags,
+      days: d.days.map(dy => ({ plan: dy.plan })),
+      photoSpot: d.photoSpot,
+      petFriendly: d.pet,
+      heroImg: d.heroImg
+    }));
+    showResults(fallbackDestinations, false); // false = fallback/curated
+  }
 }
 
-// ---- RESULTS ----
-function showResults(){
-  const top=DESTS.map(d=>({...d,sc:score(d)})).sort((a,b)=>b.sc-a.sc).slice(0,3);
-  document.getElementById('resultsHeroImg').src=top[0].heroImg;
-  const who=S.adults+' adult'+(S.adults>1?'s':'')+(S.children>0?` + ${S.children} child${S.children>1?'ren':''}`:'');
-  document.getElementById('resultsTitle').textContent='Your top '+top.length+' destinations';
-  document.getElementById('resultsMeta').textContent='$'+S.budget.toLocaleString()+' budget · '+S.nights+' · '+who+' · from '+S.departure;
+// ---- RESULTS (now accepts AI-generated or fallback destinations) ----
+function showResults(destinations, isAiGenerated){
+  const top = destinations.slice(0, 3);
+
+  // For AI-generated destinations we don't have curated hero images yet,
+  // so pull a relevant Unsplash photo by search term as a graceful default.
+  top.forEach(d => {
+    if (!d.heroImg) {
+      const query = encodeURIComponent(d.name + ' ' + (d.region || '') + ' travel');
+      d.heroImg = `https://source.unsplash.com/900x600/?${query}`;
+    }
+    if (!d.photoImg) d.photoImg = d.heroImg;
+  });
+
+  document.getElementById('resultsHeroImg').src = top[0].heroImg;
+  const who = S.adults+' adult'+(S.adults>1?'s':'')+(S.children>0?` + ${S.children} child${S.children>1?'ren':''}`:'');
+  document.getElementById('resultsTitle').textContent = 'Your top ' + top.length + ' destinations';
+  document.getElementById('resultsMeta').textContent =
+    '$'+S.budget.toLocaleString()+' budget · '+S.nights+' · '+who+' · from '+S.departure +
+    (isAiGenerated ? '' : ' · curated picks');
+
+  const aiBadge = document.querySelector('.ai-badge');
+  if (aiBadge) aiBadge.innerHTML = isAiGenerated
+    ? '<span class="ai-dot"></span> AI-matched just for you'
+    : '<span class="ai-dot"></span> Curated picks';
 
   const con=document.getElementById('resultsContainer');
   con.innerHTML='';
   top.forEach(d=>{
-    const cost=d.cost(S.budget);
+    const cost = d.estimatedCostPerPerson || d.cost || 0;
+    const sc = d.matchScore || d.sc || 85;
+    const tags = d.tags || [];
+    const days = d.days || [];
+    const petFriendly = d.petFriendly || d.pet;
+
     const el=document.createElement('div');
     el.className='dest-card';
     el.innerHTML=`
@@ -1550,26 +1632,26 @@ function showResults(){
         <div class="dest-hero-bar">
           <div class="dest-name-block">
             <div class="dest-name">${d.name}</div>
-            <div class="dest-state">${d.state}</div>
+            <div class="dest-state">${d.region || d.state || ''}</div>
           </div>
-          <div class="match-badge">${d.sc}% match</div>
+          <div class="match-badge">${sc}% match</div>
         </div>
       </div>
       <div class="dest-body">
         <div class="dest-cost-row">
-          <div class="dest-cost">~$${cost.toLocaleString()}</div>
+          <div class="dest-cost">~$${Number(cost).toLocaleString()}</div>
           <div class="dest-cost-note">per person, all-in</div>
         </div>
         <div class="dest-why">${d.why}</div>
         <div class="dest-tags">
-          ${d.tags.map(t=>`<span class="dtag">${t}</span>`).join('')}
-          ${S.pet==='coming'&&d.pet?'<span class="dtag pet">🐾 Pet friendly</span>':''}
+          ${tags.map(t=>`<span class="dtag">${t}</span>`).join('')}
+          ${S.pet==='coming'&&petFriendly?'<span class="dtag pet">🐾 Pet friendly</span>':''}
         </div>
-        <div class="days-title">Your itinerary — scroll to see all days</div>
+        <div class="days-title">Your itinerary</div>
         <div class="days-scroll">
-          ${d.days.map((dy,i)=>`
+          ${days.map((dy,i)=>`
             <div class="day-card">
-              <img class="day-card-img" src="${dy.img}" alt="Day ${i+1}">
+              <img class="day-card-img" src="${dy.img || d.heroImg}" alt="Day ${i+1}">
               <div class="day-card-body">
                 <div class="day-num">Day ${i+1}</div>
                 <div class="day-plan">${dy.plan}</div>
