@@ -988,7 +988,7 @@ img.img-error { opacity: 0; }
         </div>
       </div>
       <div class="disc-card" onclick="openQuiz()">
-        <img src="https://images.unsplash.com/photo-1502780402662-acc01917949e?w=500&q=80" alt="Nashville" data-photo-query="Nashville Tennessee skyline downtown">
+        <img src="" alt="Nashville" data-photo-query="Nashville Tennessee skyline downtown" onerror="this.classList.add('img-error')">
         <div class="disc-info">
           <div class="disc-name">Nashville, TN</div>
           <div class="disc-meta">Music & nightlife · from $1,000</div>
@@ -1521,12 +1521,16 @@ async function getVerifiedPhoto(query, fallbackUrl) {
   }
 }
 
+// 1x1 transparent gif — a guaranteed-safe placeholder that never 404s
+const SAFE_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+
 // Replace an <img> element's src once a verified photo is fetched,
 // keeping the existing fallback image visible until then (no flash of broken image)
 async function upgradeImage(imgEl, query) {
-  const fallback = imgEl.src;
-  const verifiedUrl = await getVerifiedPhoto(query, fallback);
-  if (verifiedUrl && verifiedUrl !== fallback) {
+  const fallback = (imgEl.getAttribute('src') || '').trim();
+  const safeFallback = fallback && fallback !== window.location.href ? fallback : SAFE_PLACEHOLDER;
+  const verifiedUrl = await getVerifiedPhoto(query, safeFallback);
+  if (verifiedUrl && verifiedUrl !== safeFallback) {
     imgEl.src = verifiedUrl;
   }
 }
@@ -1534,6 +1538,8 @@ async function upgradeImage(imgEl, query) {
 // Run through all elements with data-photo-query and upgrade them to verified photos
 function upgradeAllPhotos(root = document) {
   root.querySelectorAll('img[data-photo-query]').forEach(img => {
+    // Set placeholder immediately if src is empty, so nothing ever shows a broken icon
+    if (!img.getAttribute('src')) img.src = SAFE_PLACEHOLDER;
     upgradeImage(img, img.getAttribute('data-photo-query'));
   });
 }
