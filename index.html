@@ -971,7 +971,7 @@ img.img-error { opacity: 0; }
     </div>
 
     <div class="discover-grid">
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Pacific Coast Highway', 'California')">
         <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=500&q=80" alt="Road trip">
         <div class="disc-badge">🚗 Road trip</div>
         <div class="disc-info">
@@ -979,7 +979,7 @@ img.img-error { opacity: 0; }
           <div class="disc-meta">Scenic drive · from $750</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Tulum', 'Mexico')">
         <img src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=500&q=80" alt="Tulum">
         <div class="disc-badge">🔥 Trending</div>
         <div class="disc-info">
@@ -987,14 +987,14 @@ img.img-error { opacity: 0; }
           <div class="disc-meta">Beach club energy · from $1,900</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Nashville', 'Tennessee')">
         <img src="" alt="Nashville" data-photo-query="Nashville Tennessee skyline downtown" onerror="this.classList.add('img-error')">
         <div class="disc-info">
           <div class="disc-name">Nashville, TN</div>
           <div class="disc-meta">Music & nightlife · from $1,000</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Sedona', 'Arizona')">
         <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80" alt="Sedona" data-photo-query="Sedona Arizona red rocks landscape">
         <div class="disc-badge">✨ Editor's pick</div>
         <div class="disc-info">
@@ -1002,21 +1002,21 @@ img.img-error { opacity: 0; }
           <div class="disc-meta">Red rocks & wellness · from $1,400</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Traverse City', 'Michigan')">
         <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&q=80" alt="Traverse City">
         <div class="disc-info">
           <div class="disc-name">Traverse City, MI</div>
           <div class="disc-meta">Lakes & wine country · from $650</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Asheville', 'North Carolina')">
         <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=500&q=80" alt="Asheville">
         <div class="disc-info">
           <div class="disc-name">Asheville, NC</div>
           <div class="disc-meta">Mountains & arts · from $700</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Santorini', 'Greece')">
         <img src="https://images.unsplash.com/photo-1469796466635-455ede028aca?w=500&q=80" alt="Santorini" data-photo-query="Santorini Greece blue dome white buildings Oia caldera">
         <div class="disc-badge">🔥 Trending</div>
         <div class="disc-info">
@@ -1024,21 +1024,21 @@ img.img-error { opacity: 0; }
           <div class="disc-meta">Cliffside views · from $2,400</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Lake Tahoe', 'California')">
         <img src="https://images.unsplash.com/photo-1496614932623-0a3a9743552e?w=500&q=80" alt="Lake Tahoe">
         <div class="disc-info">
           <div class="disc-name">Lake Tahoe, CA</div>
           <div class="disc-meta">Mountains & water · from $900</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('New Orleans', 'Louisiana')">
         <img src="" alt="New Orleans" data-photo-query="New Orleans Louisiana French Quarter street">
         <div class="disc-info">
           <div class="disc-name">New Orleans, LA</div>
           <div class="disc-meta">Food & culture · from $850</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Orlando', 'Florida')">
         <img src="" alt="Orlando" data-photo-query="Orlando Florida theme park castle fireworks">
         <div class="disc-badge">🔥 Trending</div>
         <div class="disc-info">
@@ -1046,14 +1046,14 @@ img.img-error { opacity: 0; }
           <div class="disc-meta">Theme parks & family fun · from $1,100</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Caribbean Cruise', '')">
         <img src="" alt="Cruise" data-photo-query="cruise ship ocean deck sunset">
         <div class="disc-info">
           <div class="disc-name">Caribbean Cruise</div>
           <div class="disc-meta">Island hopping at sea · from $650</div>
         </div>
       </div>
-      <div class="disc-card" onclick="openQuiz()">
+      <div class="disc-card" onclick="openQuizForDestination('Bali', 'Indonesia')">
         <img src="" alt="Bali" data-photo-query="Bali Indonesia rice terrace temple">
         <div class="disc-badge">✨ Editor's pick</div>
         <div class="disc-info">
@@ -1118,6 +1118,14 @@ img.img-error { opacity: 0; }
     <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
 
     <!-- STEP 1: VIBE -->
+    <div class="step" id="s0">
+      <div class="step-label" id="s0-label">Planning your trip</div>
+      <div class="step-title" id="s0-title">What kind of trip?</div>
+      <div class="step-sub" id="s0-sub">Pick what you're in the mood for</div>
+      <div class="vibe-grid" id="s0-options"></div>
+      <button class="btn" onclick="goStep(2)">Continue →</button>
+    </div>
+
     <div class="step active" id="s1">
       <div class="step-label">Step 1 of 5</div>
       <div class="step-title">What's your travel vibe?</div>
@@ -1198,8 +1206,8 @@ img.img-error { opacity: 0; }
         <div class="vibe-tile" onclick="toggleVibe(this,'roadtrip')">
           <div class="slideshow">
             <img class="slide active" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&q=75" alt="Road trip">
-            <img class="slide" src="https://images.unsplash.com/photo-1473655100735-c923d8965ae1?w=400&q=75" alt="Road trip">
-            <img class="slide" src="https://images.unsplash.com/photo-1530841344095-fbe3ec8a0f2c?w=400&q=75" alt="Road trip">
+            <img class="slide" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&q=75" alt="Road trip" data-photo-query="open highway scenic road trip desert">
+            <img class="slide" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&q=75" alt="Road trip" data-photo-query="vintage van road trip mountains">
           </div>
           <div class="vibe-tile-overlay">
             <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -1248,7 +1256,7 @@ img.img-error { opacity: 0; }
         </select>
       </div>
       <button class="btn" onclick="goStep(3)">Continue →</button>
-      <button class="btn-ghost" onclick="goStep(1)">← Back</button>
+      <button class="btn-ghost" onclick="goStep(S.destinationLock ? 0 : 1)">← Back</button>
     </div>
 
     <!-- STEP 3: BUDGET -->
@@ -1399,7 +1407,7 @@ const S = {
   occasion:'Just a trip', budget:2500,
   departure:'Chicago, IL', nights:'4–6 nights',
   twindow:'Summer 2025', transport:'fly',
-  pet:'none'
+  pet:'none', destinationLock:null
 };
 
 const DESTS = [
@@ -1618,13 +1626,75 @@ function upgradeAllPhotos(root = document) {
   });
 }
 
-function openQuiz() { document.getElementById('quizOverlay').classList.add('open'); goStep(1); }
+function openQuiz() {
+  S.destinationLock = null;
+  document.getElementById('quizOverlay').classList.add('open');
+  goStep(1);
+}
 function closeQuiz() { document.getElementById('quizOverlay').classList.remove('open'); }
+
+// Trip-type options shown when someone enters via a specific destination card.
+// Falls back to a sensible generic set if the destination isn't mapped below.
+const TRIP_TYPES = {
+  'Santorini': [
+    {key:'sightseeing', name:'Sightseeing & views', desc:'Caldera, villages, sunsets', img:'https://images.unsplash.com/photo-1469796466635-455ede028aca?w=400&q=75'},
+    {key:'wellness', name:'Relax & spa', desc:'Slow mornings, infinity pools', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=75'},
+    {key:'food', name:'Food & wine', desc:'Tavernas, local wineries', img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=75'},
+    {key:'celebrate', name:'Romantic getaway', desc:'Honeymoon, anniversary energy', img:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=75'}
+  ],
+  'Orlando': [
+    {key:'celebrate', name:'Theme park days', desc:'Rides, characters, parades', img:'https://images.unsplash.com/photo-1543595958-ee5a93a16d59?w=400&q=75'},
+    {key:'family', name:'Family-friendly pace', desc:'Kid-first, easygoing days', img:'https://images.unsplash.com/photo-1476703993599-0035e3326dad?w=400&q=75'},
+    {key:'celebrate2', name:'Big celebration trip', desc:'Birthday, milestone, reunion', img:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=75'}
+  ],
+  'Bali': [
+    {key:'wellness', name:'Wellness retreat', desc:'Yoga, spa, slow mornings', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=75'},
+    {key:'nature', name:'Nature & temples', desc:'Rice terraces, waterfalls', img:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&q=75'},
+    {key:'beach', name:'Beach & beach clubs', desc:'Canggu, Uluwatu energy', img:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=75'}
+  ]
+};
+const GENERIC_TRIP_TYPES = [
+  {key:'sightseeing', name:'Sightseeing', desc:'See the highlights', img:'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&q=75'},
+  {key:'wellness', name:'Relax & unwind', desc:'Slow pace, self-care', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&q=75'},
+  {key:'food', name:'Food & culture', desc:'Local eats, hidden gems', img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=75'},
+  {key:'celebrate', name:'Celebration trip', desc:'Birthday, getaway, reunion', img:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&q=75'}
+];
+
+// Entry point when someone clicks a specific destination card.
+// Skips the generic "what's your vibe" step and jumps straight to a
+// destination-flavored trip-type step, then continues into dates/budget/etc.
+function openQuizForDestination(name, region) {
+  S.destinationLock = { name, region };
+  S.vibes = []; // will be set by trip-type selection instead
+
+  const key = Object.keys(TRIP_TYPES).find(k => name.includes(k));
+  const options = key ? TRIP_TYPES[key] : GENERIC_TRIP_TYPES;
+
+  document.getElementById('s0-label').textContent = 'Planning your trip to ' + name;
+  document.getElementById('s0-title').textContent = 'What kind of trip in ' + name + '?';
+  document.getElementById('s0-sub').textContent = 'Pick everything that fits — we\'ll build around it';
+
+  const grid = document.getElementById('s0-options');
+  grid.innerHTML = options.map(o => `
+    <div class="vibe-tile" onclick="toggleVibe(this,'${o.key}')">
+      <div class="slideshow"><img class="slide active" src="${o.img}" alt="${o.name}"></div>
+      <div class="vibe-tile-overlay">
+        <div class="vibe-check"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="vibe-name">${o.name}</div>
+        <div class="vibe-desc">${o.desc}</div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('quizOverlay').classList.add('open');
+  goStep(0);
+}
 
 function goStep(n) {
   document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
-  document.getElementById('progFill').style.width = (n*20)+'%';
+  // Step 0 (destination-specific) shows as a small head start on the bar;
+  // steps 1-5 always map to the same 20%-per-step progress regardless of entry point.
+  document.getElementById('progFill').style.width = (n===0 ? 10 : n*20)+'%';
 }
 
 // ---- VIBE ----
@@ -1735,14 +1805,22 @@ async function buildTrip(){
         pet: S.pet,
         avoidTourist: true,
         contentMode: true,
-        relaxedPace: false
+        relaxedPace: false,
+        lockedDestination: S.destinationLock ? S.destinationLock.name : null,
+        lockedRegion: S.destinationLock ? S.destinationLock.region : null
       })
     }).then(r => {
       if (!r.ok) throw new Error('API error ' + r.status);
       return r.json();
     });
 
-    const [result] = await Promise.all([apiCall, minWait]);
+    // Hard cap: never let the AI call hang forever — fall through to the
+    // safe curated fallback if it takes longer than 12 seconds.
+    const apiTimeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('AI request timed out')), 12000)
+    );
+
+    const [result] = await Promise.all([Promise.race([apiCall, apiTimeout]), minWait]);
 
     if (result && result.destinations && result.destinations.length > 0) {
       clearInterval(iv);
@@ -1757,8 +1835,26 @@ async function buildTrip(){
     await minWait;
     clearInterval(iv);
     ls.classList.remove('show');
-    // Fallback: use the original hardcoded scoring so the site never breaks
-    const top = DESTS.map(d => ({...d, sc: score(d)})).sort((a,b)=>b.sc-a.sc).slice(0,3);
+
+    let top;
+    if (S.destinationLock) {
+      // Locked to a specific destination: show just that one (or the closest match by name)
+      const match = DESTS.find(d => d.name.includes(S.destinationLock.name) || S.destinationLock.name.includes(d.name));
+      top = match ? [{...match, sc: 95}] : [{
+        name: S.destinationLock.name,
+        state: S.destinationLock.region || '',
+        sc: 90,
+        cost: () => Math.round(S.budget * 0.85),
+        why: `A trip built around ${S.destinationLock.name} — exactly what you asked for.`,
+        tags: ['Your pick'],
+        days: [{plan: `Explore the best of ${S.destinationLock.name} at your own pace.`}],
+        photoSpot: `The most iconic view in ${S.destinationLock.name} — golden hour is always the move.`,
+        pet: false
+      }];
+    } else {
+      // No lock: use the original generic scoring across all curated destinations
+      top = DESTS.map(d => ({...d, sc: score(d)})).sort((a,b)=>b.sc-a.sc).slice(0,3);
+    }
     const fallbackDestinations = top.map(d => ({
       name: d.name,
       region: d.state,
@@ -1782,24 +1878,42 @@ async function showResults(destinations, isAiGenerated){
   // For destinations without hardcoded images, fetch verified, accurate
   // photos from the real Unsplash API — covers AI-generated destinations
   // and any curated entry using heroQuery/photoQuery/days[].queryImg.
-  await Promise.all(top.map(async d => {
-    if (!d.heroImg) {
-      const query = d.heroQuery || `${d.name} ${d.region || ''} travel landscape`;
-      d.heroImg = await getVerifiedPhoto(query, 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80');
-    }
-    if (!d.photoImg) {
-      d.photoImg = d.photoQuery
-        ? await getVerifiedPhoto(d.photoQuery, d.heroImg)
-        : d.heroImg;
-    }
-    if (Array.isArray(d.days)) {
-      await Promise.all(d.days.map(async dy => {
-        if (!dy.img && dy.queryImg) {
-          dy.img = await getVerifiedPhoto(dy.queryImg, d.heroImg);
-        }
-      }));
-    }
-  }));
+  // Wrapped with a timeout + try/catch so a slow/failed photo fetch can
+  // never leave the loading screen stuck indefinitely.
+  const withTimeout = (promise, ms) => Promise.race([
+    promise,
+    new Promise(resolve => setTimeout(resolve, ms))
+  ]);
+
+  try {
+    await withTimeout(Promise.all(top.map(async d => {
+      if (!d.heroImg) {
+        const query = d.heroQuery || `${d.name} ${d.region || ''} travel landscape`;
+        d.heroImg = await getVerifiedPhoto(query, 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80');
+      }
+      if (!d.photoImg) {
+        d.photoImg = d.photoQuery
+          ? await getVerifiedPhoto(d.photoQuery, d.heroImg)
+          : d.heroImg;
+      }
+      if (Array.isArray(d.days)) {
+        await Promise.all(d.days.map(async dy => {
+          if (!dy.img && dy.queryImg) {
+            dy.img = await getVerifiedPhoto(dy.queryImg, d.heroImg);
+          }
+        }));
+      }
+    })), 6000); // hard cap: never wait more than 6s for photos before rendering anyway
+  } catch (err) {
+    console.warn('Photo enrichment failed, rendering with whatever images are available:', err);
+  }
+
+  // Safety net: ensure every destination has SOME heroImg before rendering,
+  // even if the fetch above timed out or failed entirely.
+  top.forEach(d => {
+    if (!d.heroImg) d.heroImg = 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80';
+    if (!d.photoImg) d.photoImg = d.heroImg;
+  });
 
   document.getElementById('resultsHeroImg').src = top[0].heroImg;
   const who = S.adults+' adult'+(S.adults>1?'s':'')+(S.children>0?` + ${S.children} child${S.children>1?'ren':''}`:'');
