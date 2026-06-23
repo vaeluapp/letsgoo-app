@@ -1032,10 +1032,33 @@ img.img-error { opacity: 0; }
         </div>
       </div>
       <div class="disc-card" onclick="openQuiz()">
-        <img src="https://images.unsplash.com/photo-1518684079-3c830dcef090?w=500&q=80" alt="New Orleans">
+        <img src="" alt="New Orleans" data-photo-query="New Orleans Louisiana French Quarter street">
         <div class="disc-info">
           <div class="disc-name">New Orleans, LA</div>
           <div class="disc-meta">Food & culture · from $850</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="" alt="Orlando" data-photo-query="Orlando Florida theme park castle fireworks">
+        <div class="disc-badge">🔥 Trending</div>
+        <div class="disc-info">
+          <div class="disc-name">Orlando, FL</div>
+          <div class="disc-meta">Theme parks & family fun · from $1,100</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="" alt="Cruise" data-photo-query="cruise ship ocean deck sunset">
+        <div class="disc-info">
+          <div class="disc-name">Caribbean Cruise</div>
+          <div class="disc-meta">Island hopping at sea · from $650</div>
+        </div>
+      </div>
+      <div class="disc-card" onclick="openQuiz()">
+        <img src="" alt="Bali" data-photo-query="Bali Indonesia rice terrace temple">
+        <div class="disc-badge">✨ Editor's pick</div>
+        <div class="disc-info">
+          <div class="disc-name">Bali, Indonesia</div>
+          <div class="disc-meta">Temples & jungle escape · from $1,300</div>
         </div>
       </div>
     </div>
@@ -1464,6 +1487,57 @@ const DESTS = [
     photoSpot:'Blue Ridge Parkway Craggy Gardens overlook at golden hour. Wildflowers mid-summer. It\'s everything.',
     photoImg:'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80',
     pet:true
+  },
+  {
+    name:'Orlando', state:'Florida',
+    heroQuery:'Orlando Florida theme park castle fireworks',
+    vibes:['celebrate','city'], minB:1100, maxB:7000,
+    trans:['fly','road trip','either'], cost:b=>Math.round(b*.88),
+    why:"The ultimate family celebration destination — theme parks, water parks, and pure magic for every age. Built for big group energy and once-in-a-lifetime memories.",
+    tags:['Theme parks','Family-friendly','Fireworks','All-ages fun'],
+    days:[
+      {plan:'Arrive, check into resort. Evening fireworks show at the park.',queryImg:'Orlando theme park fireworks night'},
+      {plan:'Full day at the main park — rides, characters, parade.',queryImg:'theme park rollercoaster ride day'},
+      {plan:'Water park day. Resort pool and lazy river in the afternoon.',queryImg:'water park slide pool'},
+      {plan:'Second park day or rest day. Dinner with a view of the castle.',queryImg:'Orlando Florida castle sunset'}
+    ],
+    photoSpot:'Main Street USA at park-opening golden light, castle in the background. Get there 30 min before rope drop for empty streets.',
+    photoQuery:'Orlando Florida theme park castle',
+    pet:false
+  },
+  {
+    name:'Caribbean Cruise', state:'Multiple islands',
+    heroQuery:'cruise ship ocean deck sunset',
+    vibes:['beach','celebrate','wellness'], minB:650, maxB:6000,
+    trans:['fly','either'], cost:b=>Math.round(b*.7),
+    why:"Unpack once, wake up somewhere new every day. The easiest way to see multiple islands without the logistics — and the ship itself is half the vacation.",
+    tags:['Multiple islands','All-inclusive feel','Ocean views','Zero planning'],
+    days:[
+      {plan:'Board the ship, sail away party on the top deck at sunset.',queryImg:'cruise ship deck sunset party'},
+      {plan:'First island stop — beach excursion or snorkeling tour.',queryImg:'Caribbean island beach snorkeling'},
+      {plan:'Sea day — pool deck, spa, or just do nothing at all.',queryImg:'cruise ship pool deck relaxing'},
+      {plan:'Second island stop — local market and a beach club day pass.',queryImg:'Caribbean island market colorful'}
+    ],
+    photoSpot:'Top deck at sunset on a sea day — endless ocean horizon, golden light, zero land in sight. The most underrated photo spot in travel.',
+    photoQuery:'cruise ship ocean horizon sunset',
+    pet:false
+  },
+  {
+    name:'Bali', state:'Indonesia',
+    heroQuery:'Bali Indonesia rice terrace temple',
+    vibes:['nature','wellness','food'], minB:1300, maxB:9000,
+    trans:['fly'], cost:b=>Math.round(b*.92),
+    why:"Jungle, temples, rice terraces, and beach clubs all within an hour of each other. The most complete wellness-meets-adventure destination on the planet right now.",
+    tags:['Rice terraces','Temples','Wellness retreats','Jungle waterfalls'],
+    days:[
+      {plan:'Ubud rice terrace walk at sunrise. Traditional Balinese lunch.',queryImg:'Bali rice terrace sunrise'},
+      {plan:'Sacred temple visit. Afternoon yoga or spa treatment.',queryImg:'Bali temple traditional architecture'},
+      {plan:'Waterfall hike in the jungle. Sunset at a cliffside beach club.',queryImg:'Bali waterfall jungle'},
+      {plan:'Day trip to Nusa Penida or a quiet beach day in Canggu.',queryImg:'Bali beach cliffside ocean'}
+    ],
+    photoSpot:'Tegallalang Rice Terrace at 7am — soft morning light, mist still on the hills, before the tour buses arrive.',
+    photoQuery:'Bali rice terrace morning light',
+    pet:false
   }
 ];
 
@@ -1705,14 +1779,26 @@ async function buildTrip(){
 async function showResults(destinations, isAiGenerated){
   const top = destinations.slice(0, 3);
 
-  // For AI-generated destinations we don't have curated hero images yet,
-  // so fetch a verified, accurate photo from the real Unsplash API.
+  // For destinations without hardcoded images, fetch verified, accurate
+  // photos from the real Unsplash API — covers AI-generated destinations
+  // and any curated entry using heroQuery/photoQuery/days[].queryImg.
   await Promise.all(top.map(async d => {
     if (!d.heroImg) {
-      const query = `${d.name} ${d.region || ''} travel landscape`;
+      const query = d.heroQuery || `${d.name} ${d.region || ''} travel landscape`;
       d.heroImg = await getVerifiedPhoto(query, 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80');
     }
-    if (!d.photoImg) d.photoImg = d.heroImg;
+    if (!d.photoImg) {
+      d.photoImg = d.photoQuery
+        ? await getVerifiedPhoto(d.photoQuery, d.heroImg)
+        : d.heroImg;
+    }
+    if (Array.isArray(d.days)) {
+      await Promise.all(d.days.map(async dy => {
+        if (!dy.img && dy.queryImg) {
+          dy.img = await getVerifiedPhoto(dy.queryImg, d.heroImg);
+        }
+      }));
+    }
   }));
 
   document.getElementById('resultsHeroImg').src = top[0].heroImg;
