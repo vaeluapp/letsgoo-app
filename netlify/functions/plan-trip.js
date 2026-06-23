@@ -38,11 +38,46 @@ exports.handler = async function (event) {
     pet,            // string: "coming" | "sitter" | "none"
     avoidTourist,   // boolean
     contentMode,    // boolean
-    relaxedPace     // boolean
+    relaxedPace,    // boolean
+    lockedDestination, // string | null — set when user clicked a specific destination card
+    lockedRegion       // string | null — region/country for the locked destination
   } = payload;
 
+  const isLocked = Boolean(lockedDestination);
+
   // Build a clear, structured prompt for Claude
-  const systemPrompt = `You are the trip-planning brain behind Letsgoo, a travel app that replaces endless tab-searching with one AI-generated answer. Given a traveler's vibe, budget, group, and constraints, you recommend exactly 3 real, specific destinations (city + region/country) that genuinely fit — not generic "anywhere" suggestions.
+  const systemPrompt = isLocked
+    ? `You are the trip-planning brain behind Letsgoo, a travel app that replaces endless tab-searching with one AI-generated answer. The traveler has already chosen their destination — your job is to build ONE great, specific trip package for exactly that place, tailored to their stated trip type, budget, and group. Do not suggest alternative destinations.
+
+Return:
+- the destination name and region/country (use exactly what was given)
+- a realistic estimated total cost per person (based on the stated budget and trip length)
+- a 1-2 sentence "why this fits you" explanation written in a warm, confident, slightly editorial voice (not corporate) that references their specific trip type
+- 4-6 short descriptive tags
+- a day-by-day rough itinerary (one line per day, matching the requested trip length) that reflects their chosen trip type
+- one standout "photo spot" recommendation with specific timing advice (e.g. golden hour, time of day) and what to wear/bring
+- whether the destination is genuinely pet-friendly if relevant
+
+Respond ONLY with valid JSON in this exact structure, no preamble, no markdown formatting, no code fences:
+
+{
+  "destinations": [
+    {
+      "name": "string",
+      "region": "string",
+      "estimatedCostPerPerson": number,
+      "matchScore": number (0-100),
+      "why": "string",
+      "tags": ["string", ...],
+      "days": [{"plan": "string"}, ...],
+      "photoSpot": "string",
+      "petFriendly": boolean
+    }
+  ]
+}
+
+Return exactly 1 destination object in the array — the locked one, fully detailed.`
+    : `You are the trip-planning brain behind Letsgoo, a travel app that replaces endless tab-searching with one AI-generated answer. Given a traveler's vibe, budget, group, and constraints, you recommend exactly 3 real, specific destinations (city + region/country) that genuinely fit — not generic "anywhere" suggestions.
 
 For each destination, return:
 - name and state/country
@@ -71,7 +106,24 @@ Respond ONLY with valid JSON in this exact structure, no preamble, no markdown f
   ]
 }`;
 
-  const userPrompt = `Plan a trip with these details:
+  const userPrompt = isLocked
+    ? `Build a trip package for this destination specifically — do not suggest alternatives:
+- Destination: ${lockedDestination}${lockedRegion ? ', ' + lockedRegion : ''}
+- Trip type(s) selected: ${(vibes || []).join(', ') || 'general sightseeing'}
+- Travelers: ${adults || 1} adult(s)${children ? `, ${children} child(ren) ages ${(childAges || []).join(', ')}` : ''}
+- Occasion: ${occasion || 'just a trip'}
+- Budget: $${budget || 2000} per person, total trip
+- Departing from: ${departure || 'not specified'}
+- Trip length: ${nights || '4-6 nights'}
+- Travel window: ${travelWindow || 'flexible'}
+- Transport preference: ${transport || 'either'}
+- Pet: ${pet === 'coming' ? 'traveling with a pet, need pet-friendly recommendations' : 'no pet involved'}
+- Avoid tourist traps: ${avoidTourist ? 'yes, prioritize local/hidden gems' : 'no preference'}
+- Wants photo/content spot ideas: ${contentMode ? 'yes' : 'no'}
+- Pace preference: ${relaxedPace ? 'relaxed, not overpacked' : 'can be full/active'}
+
+Return exactly 1 destination (the one specified above) as JSON per the format specified.`
+    : `Plan a trip with these details:
 - Vibes wanted: ${(vibes || []).join(', ') || 'open to anything'}
 - Travelers: ${adults || 1} adult(s)${children ? `, ${children} child(ren) ages ${(childAges || []).join(', ')}` : ''}
 - Occasion: ${occasion || 'just a trip'}
